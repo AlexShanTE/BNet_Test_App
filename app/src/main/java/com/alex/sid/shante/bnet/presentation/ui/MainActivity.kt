@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.alex.sid.shante.bnet.presentation.ui.home.HomeScreen
+import com.alex.sid.shante.bnet.presentation.ui.navigation.BNetApp
 import com.alex.sid.shante.bnet.ui.theme.BNetTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    HomeScreen()
+                    BNetApp()
                 }
             }
         }

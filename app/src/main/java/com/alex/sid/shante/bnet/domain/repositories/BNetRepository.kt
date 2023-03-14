@@ -2,7 +2,7 @@ package com.alex.sid.shante.bnet.domain.repositories
 
 import com.alex.sid.shante.bnet.domain.models.Drugs
 
-interface HomeRepository {
+interface BNetRepository {
 
     suspend fun getDrugsById(id:Int) : Drugs
 

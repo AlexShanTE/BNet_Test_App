@@ -1,13 +1,13 @@
 package com.alex.sid.shante.bnet.domain.models
 
 data class Drugs(
-    val categories: Categories,
-    val description: String,
-    val documentation: String,
-    val fields: List<Field>?,
-    val id: Int,
-    val image: String?,
-    val name: String
+    val id: Int = 0,
+    val categories: Categories = Categories("",0,"",""),
+    val description: String = "",
+    val documentation: String = "",
+    val fields: List<Field>? = emptyList(),
+    val image: String? = null,
+    val name: String = ""
 )
 
 data class Categories(

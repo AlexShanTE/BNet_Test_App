@@ -1,5 +1,6 @@
 package com.alex.sid.shante.bnet.presentation.ui.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,13 +27,15 @@ import com.alex.sid.shante.bnet.domain.models.Drugs
 @Composable
 fun DrugsCard(
     modifier: Modifier = Modifier,
-    drugs: Drugs
+    drugs: Drugs,
+    onCardClick: (Int) -> Unit
 ) {
     Card(
         modifier = modifier
             .height(300.dp)
             .width(150.dp)
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .clickable { onCardClick(drugs.id) },
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp
     ) {

@@ -1,8 +1,8 @@
 package com.alex.sid.shante.bnet.di
 
 import com.alex.sid.shante.bnet.data.BNetApi
-import com.alex.sid.shante.bnet.data.HomeRepositoryImpl
-import com.alex.sid.shante.bnet.domain.repositories.HomeRepository
+import com.alex.sid.shante.bnet.data.BNetRepositoryImpl
+import com.alex.sid.shante.bnet.domain.repositories.BNetRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,8 +17,8 @@ class RepositoryModule {
     @Singleton
     fun provideHomeRepository(
         bNetApi: BNetApi
-    ): HomeRepository {
-        return HomeRepositoryImpl(bNetApi)
+    ): BNetRepository {
+        return BNetRepositoryImpl(bNetApi)
     }
 
 }
