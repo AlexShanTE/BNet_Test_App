@@ -2,9 +2,11 @@ package com.alex.sid.shante.bnet.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alex.sid.shante.bnet.domain.repositories.HomeRepository
+import com.alex.sid.shante.bnet.di.IoDispatcher
+import com.alex.sid.shante.bnet.domain.repositories.BNetRepository
 import com.alex.sid.shante.bnet.presentation.ui.utils.parinator.DefaultPaginator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: BNetRepository,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeScreenState())
@@ -53,13 +56,17 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun loadNextItems() {
-        viewModelScope.launch {
-            paginator.loadNextItems()
+        viewModelScope.launch(dispatcher) {
+            try {
+                paginator.loadNextItems()
+            } catch (e: Throwable) {
+                val message = e.message ?: e.toString()
+            }
         }
     }
 
     private fun reset() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             paginator.reset()
         }
     }

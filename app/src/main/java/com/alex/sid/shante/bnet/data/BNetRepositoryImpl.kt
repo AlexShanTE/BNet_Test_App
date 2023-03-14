@@ -1,11 +1,11 @@
 package com.alex.sid.shante.bnet.data
 
 import com.alex.sid.shante.bnet.domain.models.Drugs
-import com.alex.sid.shante.bnet.domain.repositories.HomeRepository
+import com.alex.sid.shante.bnet.domain.repositories.BNetRepository
 
-class HomeRepositoryImpl(
+class BNetRepositoryImpl(
     private val bNetApi: BNetApi
-) : HomeRepository {
+) : BNetRepository {
     override suspend fun getDrugsById(id: Int): Drugs {
         return bNetApi.getDrugsById(id)
     }

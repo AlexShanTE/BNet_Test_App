@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,13 +35,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.alex.sid.shante.bnet.R
 import com.alex.sid.shante.bnet.presentation.ui.home.components.DrugsList
+import com.alex.sid.shante.bnet.presentation.ui.navigation.Screen
 import com.alex.sid.shante.bnet.ui.theme.roboto
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
 
     val viewModel: HomeScreenViewModel = hiltViewModel()
 
@@ -50,6 +53,8 @@ fun HomeScreen() {
         topBar = {
             SearchAppBar(
                 text = "",
+                isSearchingFieldEnabled = true,
+                onBackPressed = { navController.popBackStack() },
                 onTextChange = { request ->
                     viewModel.updateSearchField(request)
                 },
@@ -59,7 +64,9 @@ fun HomeScreen() {
             )
         },
     ) {
-        DrugsList(viewModel)
+        DrugsList(viewModel) {drugsIndex ->
+            navController.navigate(Screen.DetailsScreen.withArgs(drugsIndex.toString()))
+        }
     }
 
 }
@@ -67,6 +74,8 @@ fun HomeScreen() {
 @Composable
 fun SearchAppBar(
     text: String,
+    isSearchingFieldEnabled: Boolean,
+    onBackPressed: () -> Unit,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
@@ -84,64 +93,68 @@ fun SearchAppBar(
         modifier = Modifier.height(70.dp),
         title = {  },
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                onBackPressed()
+            }) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
         },
         actions = {
-            TextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(4.dp)
-                    .focusRequester(focusRequester),
-                value = if (!isSearchFieldShowed) stringResource(R.string.list) else value,
-                onValueChange = {
-                    value = it
-                    onTextChange(it)
-                },
-                textStyle = TextStyle(
-                    color = if (!isSearchFieldShowed) Color.White else Color.Black,
-                    fontFamily = roboto,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                ),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(
-                    onSearch = { onSearchClicked(text) }
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = textFieldBgColor,
-                    cursorColor = Color.Black.copy(alpha = ContentAlpha.medium),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(4.dp)
-            )
-            IconButton(
-                modifier = Modifier,
-                onClick = {
-                    isSearchFieldShowed = !isSearchFieldShowed
-                    if (!isSearchFieldShowed) {
-                        value = ""
-                        onTextChange("")
-                        focusManager.clearFocus()
-                    } else focusRequester.requestFocus()
-                }
-            ) {
-                if (isSearchFieldShowed) {
-                    Icon(
-                        imageVector = Icons.Default.Cancel,
-                        contentDescription = stringResource(R.string.cancel_button),
-                        tint = Color.White
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.search),
-                        contentDescription = stringResource(R.string.search_button),
-                        tint = Color.White
-                    )
+            if (isSearchingFieldEnabled) {
+                TextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp)
+                        .focusRequester(focusRequester),
+                    value = if (!isSearchFieldShowed) stringResource(R.string.list) else value,
+                    onValueChange = {
+                        value = it
+                        onTextChange(it)
+                    },
+                    textStyle = TextStyle(
+                        color = if (!isSearchFieldShowed) Color.White else Color.Black,
+                        fontFamily = roboto,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    ),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(
+                        onSearch = { onSearchClicked(text) }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = textFieldBgColor,
+                        cursorColor = Color.Black.copy(alpha = ContentAlpha.medium),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(4.dp)
+                )
+                IconButton(
+                    modifier = Modifier,
+                    onClick = {
+                        isSearchFieldShowed = !isSearchFieldShowed
+                        if (!isSearchFieldShowed) {
+                            value = ""
+                            onTextChange("")
+                            focusManager.clearFocus()
+                        } else focusRequester.requestFocus()
+                    }
+                ) {
+                    if (isSearchFieldShowed) {
+                        Icon(
+                            imageVector = Icons.Default.Cancel,
+                            contentDescription = stringResource(R.string.cancel_button),
+                            tint = Color.White
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.search),
+                            contentDescription = stringResource(R.string.search_button),
+                            tint = Color.White
+                        )
+                    }
                 }
             }
         }

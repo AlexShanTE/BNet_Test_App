@@ -18,7 +18,8 @@ import com.alex.sid.shante.bnet.presentation.ui.home.HomeScreenViewModel
 
 @Composable
 fun DrugsList(
-    viewModel: HomeScreenViewModel
+    viewModel: HomeScreenViewModel,
+    onCardClick: (Int) -> Unit
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -32,7 +33,9 @@ fun DrugsList(
             if (index >= state.items.size - 1 && !state.endReached && !state.isLoading) {
                 viewModel.loadNextItems()
             }
-            DrugsCard(drugs = item)
+            DrugsCard(drugs = item) {
+                onCardClick(item.id)
+            }
         }
 
         item {
