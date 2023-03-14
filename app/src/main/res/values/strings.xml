@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BNet</string>
+    <string name="drugs_image">Drugs image</string>
+    <string name="cancel_button">cancel button</string>
+    <string name="search_button">search button</string>
+    <string name="list">Список</string>
+    <string name="category_image">category image</string>
+    <string name="star">star</string>
+    <string name="where_to_buy">ГДЕ КУПИТЬ</string>
 </resources>
